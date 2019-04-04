@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "Część 1";
+}
+
+<div class="row">
+    <h1>Część 1</h1>
+</div>
+<div class="row">
+    <input id="input" type="text" />
+    <button id="button" type="button">Guzik</button>
+</div>
+<div class="row">
+    <table class="blueTable" id="output">
+        <thead>
+            <tr>
+                <th>L.p.</th>
+                <th>Wartość</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+@section scripts {
+    <script>
+        var tableCounter = 2;
+
+        $("#button").click(function () {
+            var text = $("#input").val();
+            addRecordToOutput(text);
+        });
+
+        function addRecordToOutput(record) {
+            var tableElement = $("#output");
+            var tableBody = tableElement.find("tbody").first();
+            var lastCell = tableBody.find("td").last();
+
+            if (lastCell.text() == "")
+                lastCell.text(record);
+            else {
+                var newRow = $("<tr></tr>");
+                var counterCell = $("<td></td>").text(tableCounter);
+                var valueCell = $("<td></td>").text(record);
+                newRow.append(counterCell);
+                newRow.append(valueCell);
+                tableBody.append(newRow);
+                tableCounter++;
+            }
+        }
+    </script>
+}

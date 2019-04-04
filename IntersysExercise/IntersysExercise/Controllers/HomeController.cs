@@ -10,8 +10,21 @@ namespace IntersysExercise.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Title = "Home Page";
+            return View();
+        }
 
+        public ActionResult Part1()
+        {
+            return View();
+        }
+
+        public ActionResult Part2()
+        {
+            return View();
+        }
+
+        public ActionResult Part3()
+        {
             return View();
         }
     }

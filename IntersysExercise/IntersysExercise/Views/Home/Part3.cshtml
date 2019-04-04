@@ -1,0 +1,67 @@
+﻿@{
+    ViewBag.Title = "Część 3";
+}
+
+<div class="row">
+    <h1>Część 3</h1>
+</div>
+<div class="row">
+    <input id="input" type="number" min="1" max="100" />
+    <button id="button" type="button">Guzik</button>
+</div>
+<div class="row">
+    <table class="blueTable" id="output">
+        <thead>
+            <tr>
+                <th>L.p.</th>
+                <th>Imię</th>
+                <th>Nazwisko</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+@section scripts {
+    <script>
+        var tableCounter = 1;
+
+        $("#button").click(function () {
+            var value = Number($("#input").val());
+
+            if (value < 1 || value > 100) {
+                alert("Wartość spoza zakresu.");
+                return;
+            }
+
+            $.ajax({
+                url: "/api/Clients",
+                method: "get",
+                contentType: 'application/json',
+                dataType: 'json',
+                data: {
+                    id: value
+                }
+            })
+                .done(function (res) {
+                    addRecordToOutput(res);
+                });
+        });
+
+        function addRecordToOutput(record) {
+            var tableElement = $("#output");
+            var tableBody = tableElement.find("tbody").first();
+
+            var newRow = $("<tr></tr>");
+            var counterCell = $("<td></td>").text(tableCounter);
+            var firstNameCell = $("<td></td>").text(record.FirstName);
+            var lastNameCell = $("<td></td>").text(record.LastName);
+            newRow.append(counterCell);
+            newRow.append(firstNameCell);
+            newRow.append(lastNameCell);
+            tableBody.append(newRow);
+            tableCounter++;
+        }
+    </script>
+}

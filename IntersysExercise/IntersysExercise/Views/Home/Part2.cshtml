@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "Część 2";
+}
+
+<div class="row">
+    <h1>Część 2</h1>
+</div>
+<div class="row">
+    <input id="input" type="number" />
+    <button id="button" type="button">Guzik</button>
+</div>
+
+@section scripts {
+    <script>
+        $("#button").click(function () {
+            var value = $("#input").val();
+
+            $.ajax({
+                url: "/api/Numbers/GetData",
+                method: "get",
+                contentType: 'application/json',
+                dataType: 'json',
+                data: {
+                    num: value
+                }
+            })
+                .done(function (res) {
+                    alert(res);
+                });
+        });
+    </script>
+}
