@@ -2,38 +2,55 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="row">
-    <input id="input" type="text" />
-    <button id="button" type="button">Guzik</button>
+<div class="part">
+    <div class="row">
+        <h1>Część 1</h1>
+    </div>
+    <div class="row">
+        <input id="input1" type="text" />
+        <button id="button1" type="button">Guzik</button>
+    </div>
+    <div class="row">
+        <table class="blueTable" id="output1">
+            <thead>
+                <tr>
+                    <th>L.p.</th>
+                    <th>Wartość</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
-<div class="row">
-    <table class="blueTable" id="output">
-        <thead>
-            <tr>
-                <th>L.p.</th>
-                <th>Wartość</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td></td>
-            </tr>
-        </tbody>
-    </table>
+
+<div class="part">
+    <div class="row">
+        <h1>Część 2</h1>
+    </div>
+    <div class="row">
+        <input id="input2" type="number" />
+        <button id="button2" type="button">Guzik</button>
+    </div>
 </div>
+
 
 @section scripts {
     <script>
+        //Part 1
         var tableCounter = 2;
 
-        $("#button").click(function () {
-            var text = $("#input").val();
+        $("#button1").click(function () {
+            var text = $("#input1").val();
             addRecordToOutput(text);
         });
 
         function addRecordToOutput(record) {
-            var tableElement = $("#output");
+            var tableElement = $("#output1");
             var tableBody = tableElement.find("tbody").first();
             var lastCell = tableBody.find("td").last();
 
@@ -49,5 +66,23 @@
                 tableCounter++;
             }
         }
+
+        //Part 2
+        $("#button2").click(function () {
+            var value = $("#input2").val();
+
+            $.ajax({
+                url: "/api/Numbers/GetData",
+                method: "get",
+                contentType: 'application/json',
+                dataType: 'json',
+                data: {
+                    num: value
+                }
+            })
+            .done(function (res) {
+                alert(res);
+            });
+        });
     </script>
 }
