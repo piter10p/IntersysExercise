@@ -27,5 +27,10 @@ namespace IntersysExercise.Controllers
         {
             return View();
         }
+
+        public ActionResult Part4()
+        {
+            return View();
+        }
     }
 }

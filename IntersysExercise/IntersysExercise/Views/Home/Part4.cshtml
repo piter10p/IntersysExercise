@@ -1,0 +1,109 @@
+﻿@{
+    ViewBag.Title = "Część 4";
+}
+
+<div class="row">
+    <h1>Część 4</h1>
+</div>
+<div class="row">
+    <table>
+        <tr>
+            <td>
+                <label for="firstNameInput">Imię</label>
+            </td>
+            <td>
+                <input id="firstNameInput" type="text" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="lastNameInput">Nazwisko</label>
+            </td>
+            <td>
+                <input id="lastNameInput" type="text" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button type="button" id="button">Guzik</button>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="row">
+    <table class="blueTable" id="output">
+        <thead>
+            <tr>
+                <th>L.p.</th>
+                <th>Imię</th>
+                <th>Nazwisko</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+@section scripts {
+    <script>
+        var tableCounter = 1;
+
+        updateTable();
+
+        $("#button").click(function () {
+
+            var client = {
+                FirstName: $("#firstNameInput").val(),
+                LastName: $("#lastNameInput").val()
+            }
+
+            $.ajax({
+                url: "/api/Clients",
+                method: "post",
+                contentType: 'application/json',
+                data: JSON.stringify(client)
+            })
+            .done(function () {
+                updateTable();
+            })
+            .fail(function () {
+                alert("Błąd");
+            });
+        });
+
+        function addRecordToOutput(record) {
+            var tableElement = $("#output");
+            var tableBody = tableElement.find("tbody").first();
+
+            var newRow = $("<tr></tr>");
+            var counterCell = $("<td></td>").text(tableCounter);
+            var firstNameCell = $("<td></td>").text(record.FirstName);
+            var lastNameCell = $("<td></td>").text(record.LastName);
+            newRow.append(counterCell);
+            newRow.append(firstNameCell);
+            newRow.append(lastNameCell);
+            tableBody.append(newRow);
+            tableCounter++;
+        }
+
+        function clearTable() {
+            var tableElement = $("#output");
+            var tableBody = tableElement.find("tbody").first();
+            tableBody.html("");
+            tableCounter = 1;
+        }
+
+        function updateTable() {
+            $.ajax({
+                url: "/api/Clients",
+                method: "get",
+                contentType: 'application/json',
+                dataType: 'json'
+            })
+            .done(function (res) {
+                clearTable();
+                for (var i = 0; i < res.length; i++)
+                    addRecordToOutput(res[i]);
+            });
+        }
+    </script>
+}
